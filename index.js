@@ -251,7 +251,38 @@ async function run() {
             res.send(result)
         })
 
-       
+        //make denied class
+        app.patch('/make-denied/:id',verifyJWT,verifyAdmin ,async(req,res)=>{
+
+            const id = req.params.id
+            console.log(id);
+            const filter = {_id: new ObjectId(id)}
+            const updatedDoc = {
+                $set:{
+                    status:'deny'
+                }
+            }
+            const result = await classesCollections.updateOne(filter,updatedDoc)
+            res.send(result)
+        })
+
+        //give feedback
+        app.patch('/admin-feedback/:id',verifyJWT,verifyAdmin ,async(req,res)=>{
+
+            const id = req.params.id
+            const feedback = req.body.feedback;
+            console.log(id, feedback);
+            const filter = {_id: new ObjectId(id)}
+            const updatedDoc = {
+                $set:{
+                    feedback:feedback
+                }
+            }
+            const result = await classesCollections.updateOne(filter,updatedDoc)
+            res.send(result)
+        })
+
+
 
 
     
