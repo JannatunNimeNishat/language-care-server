@@ -87,7 +87,7 @@ async function run() {
             app.get('/users/role/:email', verifyJWT, async(req,res)=>{
                 const email = req.params.email;
                 if(!email){
-                    return res.send('no user found')
+                    return res.send(' ')
                 }
                 const query =  {email:email}
                 const user = await usersCollections.findOne(query)
@@ -126,12 +126,22 @@ async function run() {
    //Instructors apis
 
         //verify instructor
-        
+        const verifyInstructor = async(req,res,next) =>{
+            const email = req.decoded.email;
+            const query = {email:email}
+            const instructor = await usersCollections.findOne(query)
+            if(!instructor.role === 'instructor'){
+                return res.status(403).send({error:true, message:'forbidden access'})
+            }
+
+           next()
+        }
+
 
 
     
         //create/post a class
-        app.post('/add-class', verifyJWT, async(req,res)=>{
+        app.post('/add-class', verifyJWT,verifyInstructor ,async(req,res)=>{
             const newClass = req.body;
            newClass.total_enrolled_students=0;
             console.log(newClass);
@@ -139,8 +149,10 @@ async function run() {
             res.send(result)
         })
 
+
+
         //get instructors all classes posted by him
-        app.get('/instructor_classes/:email', verifyJWT, async(req,res)=>{
+        app.get('/instructor_classes/:email', verifyJWT,verifyInstructor ,async(req,res)=>{
             const email = req.params.email;
             const query = {instructor_email:email}
             console.log('reached to ',email);
@@ -148,7 +160,7 @@ async function run() {
            res.send(instructor_classes)
         })
 
-        //Instructors apis  TODO (maybe not used)
+        //get popular insturctors
         app.get('/instructors', async(req,res)=>{
             // const query ={role:'instructor'}
             const users = await usersCollections.find().toArray()
@@ -204,6 +216,42 @@ async function run() {
         })
 
 
+
+        //admin apis
+
+         //verify admin
+         const verifyAdmin = async(req,res,next) =>{
+            const email = req.decoded.email;
+            const query = {email:email}
+            const admin = await usersCollections.findOne(query)
+            if(!admin.role === 'admin'){
+                return res.status(403).send({error:true, message:'forbidden access'})
+            }
+
+           next()
+        }
+
+        //get all classes
+        app.get('/allClasses', async(req,res)=>{
+            const result = await classesCollections.find().toArray()
+            res.send(result)
+        })
+
+        //make approved class
+        app.patch('/make-approved/:id',verifyJWT,verifyAdmin ,async(req,res)=>{
+            const id = req.params.id
+            console.log(id);
+            const filter = {_id: new ObjectId(id)}
+            const updatedDoc = {
+                $set:{
+                    status:'approved'
+                }
+            }
+            const result = await classesCollections.updateOne(filter,updatedDoc)
+            res.send(result)
+        })
+
+       
 
 
     
