@@ -282,6 +282,33 @@ async function run() {
             res.send(result)
         })
 
+        //get all users
+        app.get('/all-users', verifyJWT, verifyAdmin, async(req,res)=>{
+            const result = await usersCollections.find().toArray()
+            res.send(result)
+        })
+
+
+        //make instructor
+        app.patch('/make-instructor/:id', verifyJWT,verifyInstructor, async(req,res)=>{
+            const id = req.params.id
+            console.log(id);
+            const filter = {_id: new ObjectId(id)}
+            const updatedDoc = {
+                $set:{
+                    role:'instructor'
+                }
+            }
+            const result = await usersCollections.updateOne(filter,updatedDoc)
+            res.send(result)
+        })
+
+
+
+
+
+
+
 
 
 
