@@ -63,21 +63,11 @@ async function run() {
         })
 
 
-            //Check users role
-            app.get('/users/role/:email', verifyJWT, async(req,res)=>{
-                const email = req.params.email;
-                const query =  {email:email}
-                const user = await usersCollections.findOne(query)
-                //console.log(user);
-                const role = user.role;
-                res.send(role)
-            })
-
-
 
         //users apis
-        //CREATE
-        app.post('/users/:email', async (req, res) => {
+        //CREATE user
+        app.post('/create-user/:email', async (req, res) => {
+            console.log('new user');
             const newUser = req.body;
             const email = req.params.email;
             const query = {email:email}
@@ -91,6 +81,25 @@ async function run() {
       
         })
 
+
+
+            //Check users role
+            app.get('/users/role/:email', verifyJWT, async(req,res)=>{
+                const email = req.params.email;
+                if(!email){
+                    return res.send('no user found')
+                }
+                const query =  {email:email}
+                const user = await usersCollections.findOne(query)
+                // console.log(user);
+                const role = user.role; //todo problem
+                res.send(role)
+            })
+
+
+
+        
+
         //Classes apis
 
         //GET all approved classes
@@ -103,13 +112,43 @@ async function run() {
         })
 
 
+
+        //get all popular classes bases on total enrolled students
         app.get('/popular-classes', async(req,res)=>{
             const result = await classesCollections.find().sort({total_enrolled_students: -1}).limit(6).toArray()
             res.send(result)
         })
 
 
-        //Instructors apis
+
+
+
+   //Instructors apis
+
+        //verify instructor
+        
+
+
+    
+        //create/post a class
+        app.post('/add-class', verifyJWT, async(req,res)=>{
+            const newClass = req.body;
+           newClass.total_enrolled_students=0;
+            console.log(newClass);
+            const result = await classesCollections.insertOne(newClass)
+            res.send(result)
+        })
+
+        //get instructors all classes posted by him
+        app.get('/instructor_classes/:email', verifyJWT, async(req,res)=>{
+            const email = req.params.email;
+            const query = {instructor_email:email}
+            console.log('reached to ',email);
+            const instructor_classes = await classesCollections.find(query).toArray()
+           res.send(instructor_classes)
+        })
+
+        //Instructors apis  TODO (maybe not used)
         app.get('/instructors', async(req,res)=>{
             // const query ={role:'instructor'}
             const users = await usersCollections.find().toArray()
@@ -119,6 +158,14 @@ async function run() {
             // console.log(instructors);
             res.send(instructors)
         })
+
+
+
+
+
+
+
+
 
 
         // Student apis
