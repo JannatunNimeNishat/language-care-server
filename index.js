@@ -60,6 +60,7 @@ async function run() {
         const usersCollections = client.db('languageCareDB').collection('users')
         const classesCollections = client.db('languageCareDB').collection('classes')
         const selectedClassesCollections = client.db('languageCareDB').collection('selectedClasses')
+        const enrolledClassesCollections = client.db('languageCareDB').collection('enrolledClasses')
         const paymentCollections = client.db('languageCareDB').collection('payment')
 
         //JWT
@@ -357,13 +358,26 @@ async function run() {
             })
             await Promise.all(updateSeats)
            
+
+            //enrolled classes
+            const enrolledClasses = payment.class_name.map( async(item) =>{
+                const query = {
+                    email: payment.email,
+                    class_name: item
+                }
+                await enrolledClassesCollections.insertOne(query)
+            })
+
+            await Promise.all(enrolledClasses)
+             
+            //payment history
             const insertResult = await paymentCollections.insertOne(payment)
             
-
+            //delete the enrolled classes after payment from selected class collection
             const query = {_id :{$in: payment.selectedClass.map(id=> new ObjectId(id))}}
             const deleteResult = await selectedClassesCollections.deleteMany(query)
            
-             res.send({insertResult, deleteResult, updateSeats}) 
+             res.send({insertResult, deleteResult, updateSeats, enrolledClasses}) 
         })
 
 
