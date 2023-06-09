@@ -60,6 +60,7 @@ async function run() {
         const usersCollections = client.db('languageCareDB').collection('users')
         const classesCollections = client.db('languageCareDB').collection('classes')
         const selectedClassesCollections = client.db('languageCareDB').collection('selectedClasses')
+        const paymentCollections = client.db('languageCareDB').collection('payment')
 
         //JWT
         app.post('/jwt', (req, res) => {
@@ -328,10 +329,11 @@ async function run() {
 
         //stripe related apis
         
+        //payment intent
         app.post('/create-payment-intent', verifyJWT, async(req,res)=>{
             const {price} = req.body;
             const amount = parseFloat(price*100)
-            console.log('reached',price,amount);
+            // console.log('reached',price,amount);
 
             const paymentIntent = await stripe.paymentIntents.create({
                 amount:amount,
@@ -343,6 +345,26 @@ async function run() {
             })
         })
 
+        //make payment
+        app.post('/payments', verifyJWT, async(req,res)=>{
+           
+            const payment = req.body;
+
+            const updateSeats = payment.classes.map(async (classId)=>{
+                const filter = {_id: new ObjectId(classId)};
+                const update = {$inc: {available_seats:-1,  total_enrolled_students: 1 }};
+                await classesCollections.updateOne(filter, update)
+            })
+            await Promise.all(updateSeats)
+           
+            const insertResult = await paymentCollections.insertOne(payment)
+            
+
+            const query = {_id :{$in: payment.selectedClass.map(id=> new ObjectId(id))}}
+            const deleteResult = await selectedClassesCollections.deleteMany(query)
+           
+             res.send({insertResult, deleteResult, updateSeats}) 
+        })
 
 
 
