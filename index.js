@@ -381,7 +381,13 @@ async function run() {
         })
 
 
-
+        //my enrolled classes
+        app.get('/enrolledClasses/:email',verifyJWT ,async(req,res)=>{
+            const email = req.params.email;
+            const query = {email: email}
+            const result = await enrolledClassesCollections.find(query).toArray()
+            res.send(result)
+        })
 
 
 
