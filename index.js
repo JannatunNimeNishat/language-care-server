@@ -114,7 +114,7 @@ async function run() {
         app.get('/approved-classes', async (req, res) => {
             // console.log('reached');
             const classes = await classesCollections.find().toArray()
-            const approvedClasses = classes.filter(singleClass => singleClass.status = "approved")
+            const approvedClasses = classes.filter(singleClass => singleClass.status === "approved")
 
             res.send(approvedClasses)
         })
@@ -381,11 +381,19 @@ async function run() {
         })
 
 
-        //my enrolled classes
+        // get my enrolled classes
         app.get('/enrolledClasses/:email',verifyJWT ,async(req,res)=>{
             const email = req.params.email;
             const query = {email: email}
             const result = await enrolledClassesCollections.find(query).toArray()
+            res.send(result)
+        })
+
+        // get my payment history
+        app.get('/paymentHistory/:email',verifyJWT ,async(req,res)=>{
+            const email = req.params.email;
+            const query = {email: email}
+            const result = await paymentCollections.find(query).sort({date:-1}).toArray()
             res.send(result)
         })
 
