@@ -11,6 +11,12 @@ require('dotenv').config()
 const jwt = require('jsonwebtoken');
 
 
+
+//stripe
+const stripe = require("stripe")(process.env.PAYMENT_SECRET_KEY);
+
+
+
 //JWT middle wares
 const verifyJWT = (req, res, next) => {
     const authorization = req.headers.authorization
@@ -316,6 +322,25 @@ async function run() {
             }
             const result = await usersCollections.updateOne(filter, updatedDoc)
             res.send(result)
+        })
+
+
+
+        //stripe related apis
+        
+        app.post('/create-payment-intent', verifyJWT, async(req,res)=>{
+            const {price} = req.body;
+            const amount = parseFloat(price*100)
+            console.log('reached',price,amount);
+
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount:amount,
+                currency:'usd',
+                payment_method_types:['card'],
+            })
+            res.send({
+                clientSecret: paymentIntent.client_secret
+            })
         })
 
 
