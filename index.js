@@ -375,6 +375,7 @@ async function run() {
             
             //delete the enrolled classes after payment from selected class collection
             const query = {_id :{$in: payment.selectedClass.map(id=> new ObjectId(id))}}
+            console.log(query);
             const deleteResult = await selectedClassesCollections.deleteMany(query)
            
              res.send({insertResult, deleteResult, updateSeats, enrolledClasses}) 
