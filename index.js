@@ -19,7 +19,7 @@ const stripe = require("stripe")(process.env.PAYMENT_SECRET_KEY);
 
 //JWT middle wares
 const verifyJWT = (req, res, next) => {
-    const authorization = req.headers.authorization
+    const authorization = req.headers.authorization;
     // console.log(authorization);
     if (!authorization) {
         return res.status(401).send({ error: true, message: 'unauthorized access' })
@@ -62,6 +62,8 @@ async function run() {
         const selectedClassesCollections = client.db('languageCareDB').collection('selectedClasses')
         const enrolledClassesCollections = client.db('languageCareDB').collection('enrolledClasses')
         const paymentCollections = client.db('languageCareDB').collection('payment')
+
+        const upcomingEventsCollection = client.db('languageCareDB').collection('upcomingevents')
 
         //JWT
         app.post('/jwt', (req, res) => {
@@ -184,10 +186,6 @@ async function run() {
 
 
 
-
-
-
-
         // Student apis
 
         //Selected class
@@ -204,6 +202,8 @@ async function run() {
             const result = await selectedClassesCollections.insertOne(addClass)
             res.send(result)
         })
+
+
 
         //get selected class
         app.get('/selected-class/:email', verifyJWT, async (req, res) => {
@@ -242,6 +242,7 @@ async function run() {
         //get all classes
         app.get('/allClasses', async (req, res) => {
             const result = await classesCollections.find().toArray()
+            // const result = await upcomingEventsCollections.find().toArray()
             res.send(result)
         })
 
@@ -329,17 +330,17 @@ async function run() {
 
 
         //stripe related apis
-        
+
         //payment intent
-        app.post('/create-payment-intent', verifyJWT, async(req,res)=>{
-            const {price} = req.body;
-            const amount = parseFloat(price*100)
+        app.post('/create-payment-intent', verifyJWT, async (req, res) => {
+            const { price } = req.body;
+            const amount = parseFloat(price * 100)
             // console.log('reached',price,amount);
 
             const paymentIntent = await stripe.paymentIntents.create({
-                amount:amount,
-                currency:'usd',
-                payment_method_types:['card'],
+                amount: amount,
+                currency: 'usd',
+                payment_method_types: ['card'],
             })
             res.send({
                 clientSecret: paymentIntent.client_secret
@@ -347,20 +348,20 @@ async function run() {
         })
 
         //make payment
-        app.post('/payments', verifyJWT, async(req,res)=>{
-           
+        app.post('/payments', verifyJWT, async (req, res) => {
+
             const payment = req.body;
 
-            const updateSeats = payment.classes.map(async (classId)=>{
-                const filter = {_id: new ObjectId(classId)};
-                const update = {$inc: {available_seats:-1,  total_enrolled_students: 1 }};
+            const updateSeats = payment.classes.map(async (classId) => {
+                const filter = { _id: new ObjectId(classId) };
+                const update = { $inc: { available_seats: -1, total_enrolled_students: 1 } };
                 await classesCollections.updateOne(filter, update)
             })
             await Promise.all(updateSeats)
-           
+
 
             //enrolled classes
-            const enrolledClasses = payment.class_name.map( async(item) =>{
+            const enrolledClasses = payment.class_name.map(async (item) => {
                 const query = {
                     email: payment.email,
                     class_name: item
@@ -369,33 +370,60 @@ async function run() {
             })
 
             await Promise.all(enrolledClasses)
-             
+
             //payment history
             const insertResult = await paymentCollections.insertOne(payment)
-            
+
             //delete the enrolled classes after payment from selected class collection
-            const query = {_id :{$in: payment.selectedClass.map(id=> new ObjectId(id))}}
+            const query = { _id: { $in: payment.selectedClass.map(id => new ObjectId(id)) } }
             console.log(query);
             const deleteResult = await selectedClassesCollections.deleteMany(query)
-           
-             res.send({insertResult, deleteResult, updateSeats, enrolledClasses}) 
+
+            res.send({ insertResult, deleteResult, updateSeats, enrolledClasses })
         })
 
 
         // get my enrolled classes
-        app.get('/enrolledClasses/:email',verifyJWT ,async(req,res)=>{
+        app.get('/enrolledClasses/:email', verifyJWT, async (req, res) => {
             const email = req.params.email;
-            const query = {email: email}
+            const query = { email: email }
             const result = await enrolledClassesCollections.find(query).toArray()
             res.send(result)
         })
 
         // get my payment history
-        app.get('/paymentHistory/:email',verifyJWT ,async(req,res)=>{
+        app.get('/paymentHistory/:email', verifyJWT, async (req, res) => {
             const email = req.params.email;
-            const query = {email: email}
-            const result = await paymentCollections.find(query).sort({date:-1}).toArray()
+            const query = { email: email }
+            const result = await paymentCollections.find(query).sort({ date: -1 }).toArray()
             res.send(result)
+        })
+
+
+
+        //  upcoming events
+
+        // get all upcoming events
+        app.get('/upcoming_events', async (req, res) => {
+            try {
+                const events = await upcomingEventsCollection.find().toArray();
+                // console.log(events);
+                res.send(events);
+            } catch (error) {
+                res.status(500).send({ error: "error occured" });
+            }
+        })
+
+        // get single upcoming events
+        app.get('/upcoming_events/:id', async (req, res) => {
+            try {
+                const id = req.params.id;
+                const filter = { _id: new ObjectId(id) }
+                const event = await upcomingEventsCollection.findOne(filter);
+                res.send(event);
+            } catch (error) {
+                res.status(500).send({ error: "error occured" });
+            }
         })
 
 

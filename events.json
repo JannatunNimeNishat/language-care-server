@@ -1,0 +1,218 @@
+[
+  {
+    "eventTitle": "French Pronunciation Workshop",
+    "eventImg": "https://i.ibb.co/1rGr9Qd/French-Pronunciation-Workshop.jpg",
+    "description": "Improve your French pronunciation with expert guidance. This workshop will focus on common pronunciation challenges and provide practical tips to enhance your speaking skills.",
+    "speakers": [
+      {
+        "speakerName": "Sophie Dupont",
+        "speakerImg": "https://i.ibb.co/ry79VQG/f5.jpg",
+        "title": "French Language Coach",
+        "about": "Sophie has over 10 years of experience in teaching French and specializes in pronunciation and phonetics."
+      },
+      {
+        "speakerName": "Pierre Martin",
+        "speakerImg": "https://i.ibb.co/bsdYzV2/m1.jpg",
+        "title": "Linguistics Professor",
+        "about": "Pierre is a renowned linguistics professor with a focus on phonetics and language acquisition."
+      }
+    ],
+    "cost": 25,
+    "eventDate": "2023-11-15",
+    "eventTime": "14:00 - 16:00 UTC",
+    "location": "Online",
+    "organizer": "Language Care",
+    "totalSlot": 50,
+    "bookedSlot": 20,
+    "registeredStudentsId": []
+  },
+  {
+    "eventTitle": "Spanish Conversation Hour",
+    "eventImg": "https://i.ibb.co/JtqSRhb/Spanish-Conversation-Hour.jpg",
+    "description": "Join our interactive Spanish conversation hour to practice your speaking skills. This session is ideal for intermediate and advanced learners.",
+    "speakers": [
+      {
+        "speakerName": "Isabella Ramos",
+        "speakerImg": "https://i.ibb.co/tCSXZRf/m2.jpg",
+        "title": "Spanish Language Instructor",
+        "about": "Isabella is a certified Spanish instructor and language enthusiast."
+      }
+    ],
+    "cost": 0,
+    "eventDate": "2023-11-22",
+    "eventTime": "18:30 - 19:30 UTC",
+    "location": "Online",
+    "organizer": "Language Care",
+    "totalSlot": 30,
+    "bookedSlot": 10,
+    "registeredStudentsId": []
+  },
+  {
+    "eventTitle": "German Grammar Masterclass",
+    "eventImg": "https://i.ibb.co/DrSfFPf/German-Grammar-Masterclass.jpg",
+    "description": "Deepen your understanding of German grammar with this comprehensive masterclass. Our expert instructors will cover complex grammar topics and provide in-depth explanations.",
+    "speakers": [
+      {
+        "speakerName": "Hans Schmidt",
+        "speakerImg": "https://i.ibb.co/Kmsjd8n/m3.jpg",
+        "title": "German Language Expert",
+        "about": "Hans is a linguist and language enthusiast, known for his expertise in German grammar."
+      }
+    ],
+    "cost": 30,
+    "eventDate": "2023-12-05",
+    "eventTime": "16:00 - 18:00 UTC",
+    "location": "Online",
+    "organizer": "Language Care",
+    "totalSlot": 40,
+    "bookedSlot": 15,
+    "registeredStudentsId": []
+  },
+  {
+    "eventTitle": "Chinese Calligraphy Workshop",
+    "eventImg": "https://i.ibb.co/NjV7c3B/Chinese-Calligraphy-Workshop.jpg",
+    "description": "Discover the art of Chinese calligraphy in this hands-on workshop. Learn the basics of stroke order and create your own beautiful characters.",
+    "speakers": [
+      {
+        "speakerName": "Li Wei",
+        "speakerImg": "https://i.ibb.co/SRyfvXK/m4.jpg",
+        "title": "Chinese Calligraphy Master",
+        "about": "Li Wei is a renowned Chinese calligraphy artist with a passion for teaching."
+      }
+    ],
+    "cost": 20,
+    "eventDate": "2023-12-10",
+    "eventTime": "15:30 - 17:30 UTC",
+    "location": "Online",
+    "organizer": "Language Care",
+    "totalSlot": 25,
+    "bookedSlot": 5,
+    "registeredStudentsId": []
+  },
+  {
+    "eventTitle": "Japanese Cultural Immersion",
+    "eventImg": "https://i.ibb.co/0CftYnR/Japanese-Cultural-Immersion.jpg",
+    "description": "Experience the rich culture of Japan in this immersive event. Learn about traditional tea ceremonies, kimono dressing, and more.",
+    "speakers": [
+      {
+        "speakerName": "Yuki Nakamura",
+        "speakerImg": "https://i.ibb.co/yg9t9d5/f6.jpg",
+        "title": "Japanese Culture Enthusiast",
+        "about": "Yuki is a cultural expert and has a deep passion for sharing the beauty of Japan."
+      }
+    ],
+    "cost": 15,
+    "eventDate": "2023-12-18",
+    "eventTime": "12:00 - 14:00 UTC",
+    "location": "Online",
+    "organizer": "Language Care",
+    "totalSlot": 50,
+    "bookedSlot": 30,
+    "registeredStudentsId": []
+  },
+  {
+    "eventTitle": "English Language Clinic",
+    "eventImg": "https://i.ibb.co/6YgMx50/English-Language-Clinic.jpg",
+    "description": "Get your English language questions answered in this open clinic. Whether it's grammar, vocabulary, or pronunciation, our experts are here to help.",
+    "speakers": [
+      {
+        "speakerName": "John Davis",
+        "speakerImg": "https://i.ibb.co/tcRwvkn/m9.jpg",
+        "title": "English Language Specialist",
+        "about": "John has over 15 years of experience in teaching English and is known for his patient and effective teaching style."
+      }
+    ],
+    "cost": 0,
+    "eventDate": "2024-01-05",
+    "eventTime": "17:00 - 19:00 UTC",
+    "location": "Online",
+    "organizer": "Language Care",
+    "totalSlot": 40,
+    "bookedSlot": 10,
+    "registeredStudentsId": []
+  },
+  {
+    "eventTitle": "Russian Language Intensive Course",
+    "eventImg": "https://i.ibb.co/t3vsTYy/Russian-Language-Intensive-Course.jpg",
+    "description": "Join our intensive Russian language course designed for beginners. Learn the Cyrillic alphabet, basic vocabulary, and essential phrases.",
+    "speakers": [
+      {
+        "speakerName": "Elena Petrov",
+        "speakerImg": "https://i.ibb.co/WsPD4c7/f7.jpg",
+        "title": "Russian Language Instructor",
+        "about": "Elena is a native Russian speaker with a passion for teaching the language to newcomers."
+      }
+    ],
+    "cost": 50,
+    "eventDate": "2024-02-10",
+    "eventTime": "10:00 - 12:00 UTC",
+    "location": "Online",
+    "organizer": "Language Care",
+    "totalSlot": 30,
+    "bookedSlot": 5,
+    "registeredStudentsId": []
+  },
+  {
+    "eventTitle": "Arabic Calligraphy Workshop",
+    "eventImg": "https://i.ibb.co/0Q5Q3ky/Arabic-Calligraphy-Workshop.jpg",
+    "description": "Discover the beauty of Arabic calligraphy in this interactive workshop. Learn the art of writing Arabic script with expert guidance.",
+    "speakers": [
+      {
+        "speakerName": "Layla Ahmed",
+        "speakerImg": "https://i.ibb.co/F36DSpx/f8.jpg",
+        "title": "Arabic Calligraphy Artist",
+        "about": "Layla is a talented Arabic calligraphy artist with a passion for preserving this art form."
+      }
+    ],
+    "cost": 20,
+    "eventDate": "2024-03-05",
+    "eventTime": "14:00 - 16:00 UTC",
+    "location": "Online",
+    "organizer": "Language Care",
+    "totalSlot": 40,
+    "bookedSlot": 15,
+    "registeredStudentsId": []
+  },
+  {
+    "eventTitle": "Korean Language Exchange",
+    "eventImg": "https://i.ibb.co/xYxP8Pj/Korean-Language-Exchange.jpg",
+    "description": "Join our Korean language exchange program to practice speaking with native Korean speakers and fellow learners.",
+    "speakers": [
+      {
+        "speakerName": "Ji-Won Kim",
+        "speakerImg": "https://i.ibb.co/zN93v6c/m10.jpg",
+        "title": "Korean Language Enthusiast",
+        "about": "Ji-Won is passionate about helping learners improve their Korean language skills."
+      }
+    ],
+    "cost": 0,
+    "eventDate": "2024-03-15",
+    "eventTime": "19:00 - 20:30 UTC",
+    "location": "Online",
+    "organizer": "Language Care",
+    "totalSlot": 50,
+    "bookedSlot": 20,
+    "registeredStudentsId": []
+  },
+  {
+    "eventTitle": "Portuguese Travel Talk",
+    "eventImg": "https://i.ibb.co/m0g4PgT/Portuguese-Travel-Talk.jpg",
+    "description": "Embark on a virtual journey to Portuguese-speaking destinations. Learn about culture, travel tips, and language essentials for your next trip.",
+    "speakers": [
+      {
+        "speakerName": "Maria Silva",
+        "speakerImg": "https://i.ibb.co/ry79VQG/f5.jpg",
+        "title": "Travel Enthusiast",
+        "about": "Maria is a seasoned traveler with a deep love for Portuguese-speaking countries."
+      }
+    ],
+    "cost": 10,
+    "eventDate": "2024-03-25",
+    "eventTime": "13:30 - 15:30 UTC",
+    "location": "Online",
+    "organizer": "Language Care",
+    "totalSlot": 40,
+    "bookedSlot": 10,
+    "registeredStudentsId": []
+  }
+]
