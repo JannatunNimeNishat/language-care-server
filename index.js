@@ -414,20 +414,64 @@ async function run() {
             }
         })
 
-        // get single upcoming events
-        app.get('/upcoming_events/:id', async (req, res) => {
+        // get  upcoming events
+        app.get('/single_upcoming_events/:id' ,async (req, res) => {
             try {
+                //console.log('rached', req.body);
                 const id = req.params.id;
+
                 const filter = { _id: new ObjectId(id) }
                 const event = await upcomingEventsCollection.findOne(filter);
                 res.send(event);
+
+
             } catch (error) {
                 res.status(500).send({ error: "error occured" });
             }
         })
 
+        // get  upcoming events
+        /* app.post('/upcoming_events', async (req, res) => {
+            try {
+                
+                const id = req?.body?.id;
+                if (id) {
+                    const filter = { _id: new ObjectId(id) }
+                    const event = await upcomingEventsCollection.findOne(filter);
+                    res.send(event);
+                } else {
+                    const events = await upcomingEventsCollection.find().toArray();
+                    // console.log(events[0]);
+                    res.send(events);
+                }
+
+            } catch (error) {
+                res.status(500).send({ error: "error occured" });
+            }
+        }) */
 
 
+        //register_event 
+        app.patch('/register_event', verifyJWT, async (req, res) => {
+            const data = req.body;
+            const filter = { _id: new ObjectId(data.event_id) }
+            const event = await upcomingEventsCollection.findOne(filter);
+            const alreadyRegistered = event?.registeredStudentsId.find(item => item.email === data.email);
+
+            if (alreadyRegistered) {
+                return res.send({ message: 'user is already Registered' })
+            }
+
+            const updatedEvent = await upcomingEventsCollection.updateOne(
+                filter,
+                {
+                    $inc: { totalSlot: -1, bookedSlot: 1 },
+                    $push: { registeredStudentsId: data }
+                }
+
+            )
+            res.send(updatedEvent);
+        })
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
