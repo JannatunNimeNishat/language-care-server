@@ -299,7 +299,7 @@ async function run() {
 
 
         //make instructor
-        app.patch('/make-instructor/:id', verifyJWT, verifyInstructor, async (req, res) => {
+        app.patch('/make-instructor/:id', verifyJWT, verifyAdmin, async (req, res) => {
             const id = req.params.id
             console.log(id);
             const filter = { _id: new ObjectId(id) }
@@ -314,7 +314,7 @@ async function run() {
 
 
         //make admin
-        app.patch('/make-admin/:id', verifyJWT, verifyInstructor, async (req, res) => {
+        app.patch('/make-admin/:id', verifyJWT, verifyAdmin, async (req, res) => {
             const id = req.params.id
             console.log(id);
             const filter = { _id: new ObjectId(id) }
@@ -403,6 +403,14 @@ async function run() {
 
         //  upcoming events
 
+        //add a upcoming events
+        app.post('/add-event', verifyJWT, verifyAdmin ,async(req,res)=>{
+            const newEvent = req.body;
+            const result = await upcomingEventsCollection.insertOne(newEvent);
+            res.send(result);
+        })
+
+
         // get all upcoming events
         app.get('/upcoming_events', async (req, res) => {
             try {
@@ -415,13 +423,29 @@ async function run() {
         })
 
         // get  upcoming events
-        app.get('/single_upcoming_events/:id' ,async (req, res) => {
+        app.get('/single_upcoming_events/:id', async (req, res) => {
             try {
                 //console.log('rached', req.body);
                 const id = req.params.id;
 
                 const filter = { _id: new ObjectId(id) }
                 const event = await upcomingEventsCollection.findOne(filter);
+                res.send(event);
+
+
+            } catch (error) {
+                res.status(500).send({ error: "error occured" });
+            }
+        })
+
+        //delete upcoming event
+        app.delete('/delete_event/:id', async (req, res) => {
+            try {
+                //console.log('rached', req.body);
+                const id = req.params.id;
+
+                const filter = { _id: new ObjectId(id) }
+                const event = await upcomingEventsCollection.deleteOne(filter);
                 res.send(event);
 
 
@@ -472,6 +496,19 @@ async function run() {
             )
             res.send(updatedEvent);
         })
+
+        // get single user registered event
+        app.get('/registered_events/:email', verifyJWT ,async (req, res) => {
+            const email = req.params.email;
+            console.log('reached',email);
+
+            const events = await upcomingEventsCollection.find({ "registeredStudentsId.email": email }).toArray();
+            res.send(events);
+
+        })
+
+
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
