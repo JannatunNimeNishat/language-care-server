@@ -54,7 +54,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
     try {
-        // Connect the client to the server	(optional starting in v4.7)
+        
         // await client.connect();
 
         const usersCollections = client.db('languageCareDB').collection('users')
@@ -75,6 +75,7 @@ async function run() {
 
 
         //users apis
+
         //CREATE user
         app.post('/create-user/:email', async (req, res) => {
             console.log('new user');
@@ -514,7 +515,7 @@ async function run() {
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
-        // Ensures that the client will close when you finish/error
+       
         // await client.close();
     }
 }
